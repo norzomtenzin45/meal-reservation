@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Meal Reservation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: linear-gradient(to right, #f8f9fa, #e9ecef);
+    }
+    h1, h3 {
+      color: #333;
+    }
+    .section {
+      background: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    label {
+      display: inline-block;
+      margin-right: 10px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 8px 12px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #thankYouMessage {
+      display: none;
+      color: green;
+      font-weight: bold;
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🍽️ Reserve Your Meals</h1>
+
+  <div class="section">
+    <form id="mealForm">
+      <label>Name: <input type="text" id="name" required></label>
+
+      <div class="meal-choice">
+        <h3>🍳 Breakfast</h3>
+        <label><input type="radio" name="breakfast" value="yes"> Yes</label>
+        <label><input type="radio" name="breakfast" value="no"> No</label>
+        <label><input type="radio" name="breakfast" value="maybe"> Maybe</label>
+      </div>
+
+      <div class="meal-choice">
+        <h3>🍛 Lunch</h3>
+        <label><input type="radio" name="lunch" value="yes"> Yes</label>
+        <label><input type="radio" name="lunch" value="no"> No</label>
+        <label><input type="radio" name="lunch" value="maybe"> Maybe</label>
+      </div>
+
+      <div class="meal-choice">
+        <h3>🍽️ Dinner</h3>
+        <label><input type="radio" name="dinner" value="yes"> Yes</label>
+        <label><input type="radio" name="dinner" value="no"> No</label>
+        <label><input type="radio" name="dinner" value="maybe"> Maybe</label>
+      </div>
+
+      <button type="submit">Submit</button>
+    </form>
+
+    <p id="thankYouMessage">✅ Thank you for registering!</p>
+  </div>
+
+  <script>
+    const form = document.getElementById("mealForm");
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value.trim();
+      const breakfast = document.querySelector('input[name="breakfast"]:checked')?.value;
+      const lunch = document.querySelector('input[name="lunch"]:checked')?.value;
+      const dinner = document.querySelector('input[name="dinner"]:checked')?.value;
+
+      if (!name || !breakfast || !lunch || !dinner) {
+        alert("Please fill out all fields.");
+        return;
+      }
+
+      const meals = { breakfast, lunch, dinner };
+      let reservations = JSON.parse(localStorage.getItem("reservations")) || [];
+      reservations.push({ name, meals });
+      localStorage.setItem("reservations", JSON.stringify(reservations));
+
+      // Show thank-you message
+      document.getElementById("thankYouMessage").style.display = "block";
+
+      // Optional: hide the form
+      form.style.display = "none";
+    });
+  </script>
+
+</body>
+</html>
